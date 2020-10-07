@@ -6,10 +6,12 @@ go mod vendor
 
 go test -mod=vendor ./app/... -coverprofile cover.out
 
-#.PHONY: lint
-## lint: runs `golangci-lint`
-#lint:
-# @golangci-lint run ./app/...
+rem .PHONY: lint
+rem # lint: runs `golangci-lint`
+rem lint:
+rem @golangci-lint run ./app/...
+
+cd..
 
 go run -v -mod=vendor app/main.go --dbg "--super=tsvmks"
 
