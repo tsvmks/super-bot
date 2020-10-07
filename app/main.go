@@ -79,6 +79,7 @@ func main() {
 				DelayToOff:   time.Minute,
 				Client:       http.Client{Timeout: 5 * time.Second}}),
 		bot.NewNews(httpClient, "https://news.radio-t.com/api", opts.NewsArticles),
+		bot.NewFuncs(httpClient, "https://news.radio-t.com/api", ),
 		bot.NewAnecdote(httpClient),
 		bot.NewStackOverflow(),
 		bot.NewDuck(opts.MashapeToken, httpClient),
