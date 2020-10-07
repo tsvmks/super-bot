@@ -10,8 +10,8 @@ telegram-bot:
         max-file: "5"
 
     environment:
-        - TELEGRAM_TOKEN
-        - TELEGRAM_GROUP
+        - TELEGRAM_TOKEN=1332428511:AAGP-c8vs7SdToFLIcW1tmKANReanZCrS2s
+        - TELEGRAM_GROUP=kristaBIChat
         - MASHAPE_TOKEN
         - DEBUG=true
     volumes:
@@ -21,4 +21,4 @@ telegram-bot:
     ports:
         - "18001:18001" # RJTC_PORT
 
-    command: /srv/telegram-rt-bot --super=umputun --super=bobuk --super=grayru --super=ksenks
+    command: /srv/telegram-rt-bot --super=unputun
