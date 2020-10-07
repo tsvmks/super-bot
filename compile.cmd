@@ -13,6 +13,8 @@ rem @golangci-lint run ./app/...
 
 cd..
 
+go test -mod=vendor ./app/... -coverprofile cover.out
+
 go run -v -mod=vendor app/main.go --dbg "--super=tsvmks"
 
 pause
