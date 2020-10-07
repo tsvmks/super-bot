@@ -21,4 +21,4 @@ telegram-bot:
     ports:
         - "18001:18001" # RJTC_PORT
 
-    command: /srv/telegram-rt-bot --super=unputun
+    command: /srv/telegram-rt-bot --super=tsvmks
