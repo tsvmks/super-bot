@@ -7,14 +7,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTip_OnMessage(t *testing.T) {
-	bot, err := NewTip("./../../data")
-	require.NoError(t, err)
-	assert.Equal(t, Response{Text: "_понг_", Send: true}, bot.OnMessage(Message{Text: "tip!"}))
-	assert.Equal(t, Response{Text: "_pong_", Send: true}, bot.OnMessage(Message{Text: "ping"}))
-	assert.Equal(t, Response{Text: "_ Каждый французский солдат носит в своем ранце маршальский жезл._", Send: true}, bot.OnMessage(Message{Text: "Say!"}))
-}
-
 func TestTip_Help(t *testing.T) {
 	bot, err := NewSys("./../../data")
 	require.NoError(t, err)
