@@ -19,6 +19,7 @@ func TestSys_Help(t *testing.T) {
 	bot, err := NewSys("./../../data")
 	require.NoError(t, err)
 	assert.Equal(t, "say! _– набраться мудрости_\n"+
+		"tip! _– получить подсказку_\n"+
 		"ping _– ответит pong_\n"+
 		"пинг _– ответит понг_\n"+
 		"кто?, who? _– Разработчики Krista BI_\n"+

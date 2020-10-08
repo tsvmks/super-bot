@@ -1,4 +1,5 @@
 say!|набраться мудрости|*must show say.data*
+tip!|получить подсказку|*must show tips.data*
 ping|ответит pong|_pong_
 пинг|ответит понг|_понг_
 кто?;who?|Разработчики Krista BI|_мы! @belovgr @tsvmks, @vnvor @pereborec @greyax @sergey_bogoyavlensky_

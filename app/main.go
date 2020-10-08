@@ -85,6 +85,12 @@ func main() {
 		log.Printf("[ERROR] failed to load sysbot, %v", err)
 	}
 
+	if sb, err := bot.NewTip(opts.SysData); err == nil {
+		multiBot = append(multiBot, sb)
+	} else {
+		log.Printf("[ERROR] failed to load sysbot, %v", err)
+	}
+
 	allActivityTerm := events.Terminator{
 		BanDuration:   time.Minute * 5,
 		BanPenalty:    10,

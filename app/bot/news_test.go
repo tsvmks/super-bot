@@ -39,7 +39,7 @@ func TestNewsBot_ReactionOnNewsRequest(t *testing.T) {
 	require.Equal(
 		t,
 		Response{Text: "- [title1](link1) 2020-02-09\n- [title2](link2) 2020-02-10" +
-			"\n- [все новости и темы](https://news.radio-t.com)", Send: true},
+			"\n- [все новости и темы]", Send: true},
 		b.OnMessage(Message{Text: "news!"}),
 	)
 }
@@ -61,7 +61,7 @@ func TestNewsBot_ReactionOnNewsRequestAlt(t *testing.T) {
 
 	require.Equal(
 		t,
-		Response{Text: "- [title](link) 0001-01-01\n- [все новости и темы](https://news.radio-t.com)", Send: true},
+		Response{Text: "- [title](link) 0001-01-01\n- [все новости и темы]", Send: true},
 		b.OnMessage(Message{Text: "news!"}),
 	)
 }
