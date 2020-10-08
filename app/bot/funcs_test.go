@@ -29,7 +29,7 @@ func TestFuncsBot_ReactionOnNewsRequest(t *testing.T) {
 
 	require.Equal(
 		t,
-		Response{Text: "- [title1](link1) \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
+		Response{Text: "- [title1]\n\nСинтаксис:\n_link1_\nТип значения: \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
 		b.OnMessage(Message{Text: "func!"}),
 	)
 }
@@ -51,7 +51,7 @@ func TestFuncsBot_ReactionOnNewsRequestAlt(t *testing.T) {
 
 	require.Equal(
 		t,
-		Response{Text: "- [title](exampl) \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
+		Response{Text: "- [title]\n\nСинтаксис:\n_exampl_\nТип значения: \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
 		b.OnMessage(Message{Text: "func!"}),
 	)
 }
@@ -73,7 +73,7 @@ func TestFuncsBot_ReactionOnNewsRequestAlt_c(t *testing.T) {
 
 	require.Equal(
 		t,
-		Response{Text: "- [title](exampl) \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
+		Response{Text: "- [title]\n\nСинтаксис:\n_exampl_\nТип значения: \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
 		b.OnMessage(Message{Text: "func! Concat"}),
 	)
 }

@@ -69,7 +69,7 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 	}
 
 	var lines []string
-	lines = append(lines, fmt.Sprintf("- [%s](%s) %s", article.Title, article.Exampl, article.returnType))
+	lines = append(lines, fmt.Sprintf("- [%s]\n\nСинтаксис:\n_%s_\nТип значения: %s", article.Title, article.Exampl, article.returnType))
 	return Response{
 		Text: strings.Join(lines, "\n") + "\n- [все функции](https://help.krista.ru/kb/4217)",
 		Send: true,
