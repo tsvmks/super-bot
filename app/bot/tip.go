@@ -43,10 +43,6 @@ func (p Tip) Help() (line string) {
 
 // OnMessage implements bot.Interface
 func (p Tip) OnMessage(msg Message) (response Response) {
-	if !contains(p.ReactOn(), msg.Text) {
-		return Response{}
-	}
-
 	if strings.EqualFold(msg.Text, "tip!") {
 		if p.say != nil && len(p.say) > 0 {
 			return Response{
