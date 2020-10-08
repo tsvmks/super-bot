@@ -71,18 +71,10 @@ func main() {
 
 	httpClient := &http.Client{Timeout: 5 * time.Second}
 	multiBot := bot.MultiBot{
-		bot.NewBroadcastStatus(
-			ctx,
-			bot.BroadcastParams{
-				URL:          "https://stream.radio-t.com",
-				PingInterval: 10 * time.Second,
-				DelayToOff:   time.Minute,
-				Client:       http.Client{Timeout: 5 * time.Second}}),
 		bot.NewNews(httpClient, "https://news.radio-t.com/api", opts.NewsArticles),
 		bot.NewFuncs(httpClient, "http://test.piao.fm.epbs.ru"),
 		bot.NewAnecdote(httpClient),
 		bot.NewStackOverflow(),
-		bot.NewDuck(opts.MashapeToken, httpClient),
 		bot.NewWTF(time.Hour*24, 7*time.Hour*24, opts.SuperUsers),
 		bot.NewBanhammer(tbAPI, opts.SuperUsers, 5000),
 	}

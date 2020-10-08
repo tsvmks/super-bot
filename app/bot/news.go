@@ -29,7 +29,7 @@ func NewNews(client HTTPClient, api string, max int) *News {
 
 // Help returns help message
 func (n News) Help() string {
-	return genHelpMsg(n.ReactOn(), "5 последних новостей для Радио-Т")
+	return genHelpMsg(n.ReactOn(), "5 последних IT-новости")
 }
 
 // OnMessage returns N last news articles
@@ -65,7 +65,7 @@ func (n News) OnMessage(msg Message) (response Response) {
 		lines = append(lines, fmt.Sprintf("- [%s](%s) %s", a.Title, a.Link, a.Ts.Format("2006-01-02")))
 	}
 	return Response{
-		Text: strings.Join(lines, "\n") + "\n- [все новости и темы](https://news.radio-t.com)",
+		Text: strings.Join(lines, "\n") + "\n- [все новости и темы]",
 		Send: true,
 	}
 }
