@@ -1,3 +1,9 @@
+rem Слушаем чат
+SET TELEGRAM_GROUP=kristaBIChat
+
+rem id нашего бота
+SET TELEGRAM_TOKEN=1332428511:AAGP-c8vs7SdToFLIcW1tmKANReanZCrS2s
+
 go generate ./app/...
 
 cd app && go build -v -mod=vendor

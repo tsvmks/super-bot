@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"strings"
-	"time"
 )
 
 // funcs bot, returns numArticles last articles in MD format from https://funcs.radio-t.com/api/v1/funcs/lastmd/5
@@ -15,16 +14,16 @@ type Funcs struct {
 	funcName     string
 }
 
-type funcsArticle struct {
-	Title string    `json:"title"`
-	Link  string    `json:"link"`
-	Ts    time.Time `json:"ats"`
+type funcDesc struct {
+	Title      string `json:"description"`
+	Exampl     string `json:"formalParameters"`
+	returnType string `json:"returnType"`
 }
 
 // NewFuncs makes new funcs bot
-func NewFuncs(client HTTPClient, api string, name string) *Funcs {
+func NewFuncs(client HTTPClient, api string) *Funcs {
 	log.Printf("[INFO] funcs bot with api %s", api)
-	return &Funcs{client: client, funcsAPI: api, funcName: name}
+	return &Funcs{client: client, funcsAPI: api}
 }
 
 // Help returns help message
@@ -38,7 +37,7 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 		return Response{}
 	}
 
-	reqURL := fmt.Sprintf("%s/engine/function//%s", n.funcsAPI, n.funcName)
+	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function//%s", n.funcsAPI, msg.Text)
 	log.Printf("[DEBUG] request %s", reqURL)
 
 	req, err := makeHTTPRequest(reqURL)
@@ -54,7 +53,7 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 	}
 	defer resp.Body.Close()
 
-	articles := []funcsArticle{}
+	articles := []funcDesc{}
 	if err = json.NewDecoder(resp.Body).Decode(&articles); err != nil {
 		log.Printf("[WARN] failed to parse response, error %v", err)
 		return Response{}
@@ -62,7 +61,7 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 
 	var lines []string
 	for _, a := range articles {
-		lines = append(lines, fmt.Sprintf("- [%s](%s) %s", a.Title, a.Link, a.Ts.Format("2006-01-02")))
+		lines = append(lines, fmt.Sprintf("- [%s](%s) %s", a.Title, a.Exampl, a.returnType))
 	}
 	return Response{
 		Text: strings.Join(lines, "\n") + "\n- [все функции](https://help.krista.ru/kb/4217)",
