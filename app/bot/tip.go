@@ -5,8 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // Sys implements basic bot function to respond on ping and others from basic.data file.
@@ -69,29 +67,6 @@ func (p Tip) OnMessage(msg Message) (response Response) {
 	}
 
 	return Response{}
-}
-
-func (p *Tip) loadBasicData() error {
-	bdata, err := readLines(p.dataLocation + "/basic.data")
-	if err != nil {
-		return errors.Wrap(err, "can't load basic.data")
-	}
-
-	for _, line := range bdata {
-		elems := strings.Split(line, "|")
-		if len(elems) != 3 {
-			log.Printf("[DEBUG] bad format %s, ignored", line)
-			continue
-		}
-		sysCommand := sysCommand{
-			description: elems[1],
-			message:     elems[2],
-			triggers:    strings.Split(elems[0], ";"),
-		}
-		p.commands = append(p.commands, sysCommand)
-		log.Printf("[DEBUG] loaded basic response, %v, %s", sysCommand.triggers, sysCommand.message)
-	}
-	return nil
 }
 
 func (p *Tip) loadSayData() error {
