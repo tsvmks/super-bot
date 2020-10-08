@@ -23,12 +23,9 @@ type tipCommand struct {
 }
 
 // NewSys makes new sys bot and load data to []say and basic map
-func NewTip(dataLocation string) (*Sys, error) {
+func NewTip(dataLocation string) (*Tip, error) {
 	log.Printf("[INFO] created sys bot, data location=%s", dataLocation)
-	res := Sys{dataLocation: dataLocation}
-	if err := res.loadBasicData(); err != nil {
-		return nil, err
-	}
+	res := Tip{dataLocation: dataLocation}
 	if err := res.loadSayData(); err != nil {
 		return nil, err
 	}
