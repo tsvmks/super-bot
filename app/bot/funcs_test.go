@@ -58,8 +58,24 @@ func TestFuncsBot_ReactionOnNewsRequestAlt(t *testing.T) {
 	)
 }
 
-func TestFuncsBot_ReactionOnUnexpectedMessage(t *testing.T) {
+func TestFuncsBot_ReactionOnNewsRequestAlt_c(t *testing.T) {
 	mockHTTP := &mocks.HTTPClient{}
 	b := NewFuncs(mockHTTP, "")
-	require.Equal(t, Response{}, b.OnMessage(Message{Text: "unexpected"}))
+
+	article := funcDesc{
+		Title: "title",
+		Exampl:  "exampl",
+	}
+	articleJSON, err := json.Marshal([]funcDesc{article})
+	require.NoError(t, err)
+
+	mockHTTP.On("Do", mock.Anything).Return(&http.Response{
+		Body: ioutil.NopCloser(bytes.NewReader(articleJSON)),
+	}, nil)
+
+	require.Equal(
+		t,
+		Response{Text: "- [title](exampl) \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
+		b.OnMessage(Message{Text: "func! Concat"}),
+	)
 }

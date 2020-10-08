@@ -33,11 +33,13 @@ func (n Funcs) Help() string {
 
 // OnMessage returns N last funcs articles
 func (n Funcs) OnMessage(msg Message) (response Response) {
-	if !contains(n.ReactOn(), msg.Text) {
-		return Response{}
+	text := msg.Text
+	for _, prefix := range n.ReactOn() {
+		if strings.HasPrefix(msg.Text, prefix) {
+			text = strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
+		}
 	}
 
-	text := msg.Text
 	for _, prefix := range n.ReactOn() {
 		if strings.HasPrefix(msg.Text, prefix) {
 			strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
