@@ -53,7 +53,7 @@ func TestFuncsBot_ReactionOnNewsRequestAlt(t *testing.T) {
 
 	require.Equal(
 		t,
-		Response{Text: "- [[title](exampl) \\n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
+		Response{Text: "- [title](exampl) \n- [все функции](https://help.krista.ru/kb/4217)", Send: true},
 		b.OnMessage(Message{Text: "func!"}),
 	)
 }

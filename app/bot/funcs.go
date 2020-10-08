@@ -37,7 +37,14 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 		return Response{}
 	}
 
-	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function//%s", n.funcsAPI, msg.Text)
+	text := msg.Text
+	for _, prefix := range n.ReactOn() {
+		if strings.HasPrefix(msg.Text, prefix) {
+			strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
+		}
+	}
+
+	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function//%s", n.funcsAPI, text)
 	log.Printf("[DEBUG] request %s", reqURL)
 
 	req, err := makeHTTPRequest(reqURL)
