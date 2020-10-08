@@ -46,7 +46,7 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 		}
 	}
 
-	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function//%s", n.funcsAPI, text)
+	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function/%s", n.funcsAPI, text)
 	log.Printf("[DEBUG] request %s", reqURL)
 
 	req, err := makeHTTPRequest(reqURL)
@@ -62,16 +62,14 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 	}
 	defer resp.Body.Close()
 
-	articles := []funcDesc{}
-	if err = json.NewDecoder(resp.Body).Decode(&articles); err != nil {
+	article := funcDesc{}
+	if err = json.NewDecoder(resp.Body).Decode(&article); err != nil {
 		log.Printf("[WARN] failed to parse response, error %v", err)
 		return Response{}
 	}
 
 	var lines []string
-	for _, a := range articles {
-		lines = append(lines, fmt.Sprintf("- [%s](%s) %s", a.Title, a.Exampl, a.returnType))
-	}
+	lines = append(lines, fmt.Sprintf("- [%s](%s) %s", article.Title, article.Exampl, article.returnType))
 	return Response{
 		Text: strings.Join(lines, "\n") + "\n- [все функции](https://help.krista.ru/kb/4217)",
 		Send: true,

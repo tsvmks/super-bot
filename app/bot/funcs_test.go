@@ -15,13 +15,11 @@ func TestFuncsBot_ReactionOnNewsRequest(t *testing.T) {
 	mockHTTP := &mocks.HTTPClient{}
 	b := NewFuncs(mockHTTP, "")
 
-	articles := []funcDesc{
-		{
+	articles := funcDesc{
 			Title: "title1",
 			Exampl:  "link1",
 			returnType:   "VARCHAR",
-		},
-	}
+		}
 	articleJSON, err := json.Marshal(articles)
 	require.NoError(t, err)
 
@@ -44,7 +42,7 @@ func TestFuncsBot_ReactionOnNewsRequestAlt(t *testing.T) {
 		Title: "title",
 		Exampl:  "exampl",
 	}
-	articleJSON, err := json.Marshal([]funcDesc{article})
+	articleJSON, err := json.Marshal(article)
 	require.NoError(t, err)
 
 	mockHTTP.On("Do", mock.Anything).Return(&http.Response{
@@ -66,7 +64,7 @@ func TestFuncsBot_ReactionOnNewsRequestAlt_c(t *testing.T) {
 		Title: "title",
 		Exampl:  "exampl",
 	}
-	articleJSON, err := json.Marshal([]funcDesc{article})
+	articleJSON, err := json.Marshal(article)
 	require.NoError(t, err)
 
 	mockHTTP.On("Do", mock.Anything).Return(&http.Response{
