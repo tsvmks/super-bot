@@ -61,7 +61,10 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 	article := funcDesc{}
 	if err = json.NewDecoder(resp.Body).Decode(&article); err != nil {
 		log.Printf("[WARN] failed to parse response, error %v", err)
-		return Response{}
+		return Response{
+			Text: "Функция не найдена!- [все функции](https://help.krista.ru/kb/4217)",
+			Send: true,
+		}
 	}
 
 	var lines []string
