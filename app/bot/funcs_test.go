@@ -77,3 +77,9 @@ func TestFuncsBot_ReactionOnNewsRequestAlt_c(t *testing.T) {
 		b.OnMessage(Message{Text: "func! Concat"}),
 	)
 }
+
+func TestFuncBot_ReactionOnUnexpectedMessage(t *testing.T) {
+	mockHTTP := &mocks.HTTPClient{}
+	b := NewFuncs(mockHTTP, "")
+	require.Equal(t, Response{}, b.OnMessage(Message{Text: "unexpected"}))
+}

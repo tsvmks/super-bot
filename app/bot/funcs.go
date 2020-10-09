@@ -33,20 +33,16 @@ func (n Funcs) Help() string {
 
 // OnMessage returns N last funcs articles
 func (n Funcs) OnMessage(msg Message) (response Response) {
-	text := msg.Text
-	for _, prefix := range n.ReactOn() {
-		if strings.HasPrefix(msg.Text, prefix) {
-			text = strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
-		}
+	if !strings.Contains(msg.Text, "func!")  &&  strings.Contains(msg.Text, "функция!") {
+		return Response{}
 	}
 
-	for _, prefix := range n.ReactOn() {
-		if strings.HasPrefix(msg.Text, prefix) {
-			strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
-		}
+	ok, reqText := n.request(msg.Text)
+	if !ok {
+		return Response{}
 	}
 
-	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function/%s", n.funcsAPI, text)
+	reqURL := fmt.Sprintf("%s/reporting/rest/engine/function/%s", n.funcsAPI, reqText)
 	log.Printf("[DEBUG] request %s", reqURL)
 
 	req, err := makeHTTPRequest(reqURL)
@@ -74,6 +70,15 @@ func (n Funcs) OnMessage(msg Message) (response Response) {
 		Text: strings.Join(lines, "\n") + "\n- [все функции](https://help.krista.ru/kb/4217)",
 		Send: true,
 	}
+}
+
+func (d *Funcs) request(text string) (react bool, reqText string) {
+	for _, prefix := range d.ReactOn() {
+		if strings.HasPrefix(text, prefix) {
+			return true, strings.Replace(strings.TrimSpace(strings.TrimPrefix(text, prefix)), " ", "+", -1)
+		}
+	}
+	return false, ""
 }
 
 // ReactOn keys
