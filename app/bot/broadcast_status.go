@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"sync"
@@ -26,8 +27,8 @@ type BroadcastParams struct {
 
 // BroadcastStatus bot replies with current broadcast status
 type BroadcastStatus struct {
-	status         bool // current broadcast status
-	lastSentStatus bool // last status sent with OnMessage
+	version         string // current broadcast status
+	lastSentVersion string // last status sent with OnMessage
 	statusMx       sync.Mutex
 }
 
@@ -50,15 +51,10 @@ func (b *BroadcastStatus) OnMessage(_ Message) (response Response) {
 	defer b.statusMx.Unlock()
 
 	response.Pin = false
-	if b.lastSentStatus != b.status {
+	if b.lastSentVersion != b.version {
 		response.Send = true
-		if b.status {
-			response.Text = MsgBroadcastStarted
-		} else {
-			response.Text = MsgBroadcastFinished
-			response.Unpin = true // unpin message "broadcast started" (sent by outside clients)
-		}
-		b.lastSentStatus = b.status
+		response.Text = b.version
+		b.lastSentVersion = b.version
 	}
 	return
 }
@@ -82,29 +78,14 @@ func (b *BroadcastStatus) check(ctx context.Context, lastOn time.Time, params Br
 
 	newStatus := ping(ctx, params.Client, params.URL)
 
-	// 0 -> 1
-	if !b.status && newStatus {
-		log.Print("[INFO] Broadcast started")
-		b.status = true
-		return time.Now()
-	}
-
-	// 1 -> 0
-	// 0 -> 0
-	if !newStatus {
-		if b.status && lastOn.Add(params.DelayToOff).Before(time.Now()) {
-			log.Print("[INFO] Broadcast finished")
-			b.status = false
-		}
-		return lastOn
-	}
+	b.version = newStatus
 
 	// 1 -> 1
 	return time.Now()
 }
 
 // ping do get request to https://stream.radio-t.com and returns true on OK status and false for all other statuses
-func ping(ctx context.Context, client http.Client, url string) (status bool) {
+func ping(ctx context.Context, client http.Client, url string) (status string) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		log.Printf("[WARN] unable to create %v request, %v", url, err)
@@ -118,17 +99,19 @@ func ping(ctx context.Context, client http.Client, url string) (status bool) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == http.StatusOK {
-		status = true
+	responseData,err  := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
 	}
+	status = string(responseData)
 	return
 }
 
 // nolint
-func (b *BroadcastStatus) getStatus() bool {
+func (b *BroadcastStatus) getStatus() string {
 	b.statusMx.Lock()
 	defer b.statusMx.Unlock()
-	return b.status
+	return b.version
 }
 
 // ReactOn keys

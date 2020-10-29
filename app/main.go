@@ -71,6 +71,13 @@ func main() {
 
 	httpClient := &http.Client{Timeout: 5 * time.Second}
 	multiBot := bot.MultiBot{
+		bot.NewBroadcastStatus(
+			ctx,
+			bot.BroadcastParams{
+				URL:          "http://172.20.12.154:8090/version",
+				PingInterval: 10 * time.Second,
+				DelayToOff:   time.Minute,
+				Client:       http.Client{Timeout: 5 * time.Second}}),
 		bot.NewNews(httpClient, "https://news.radio-t.com/api", opts.NewsArticles),
 		bot.NewFuncs(httpClient, "http://test.piao.fm.epbs.ru"),
 		bot.NewAnecdote(httpClient),
