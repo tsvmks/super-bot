@@ -87,12 +87,18 @@ func main() {
 	}
 
 	if sb, err := bot.NewSys(opts.SysData); err == nil {
-		multiBot = append(multiBot, sb)
+		multiBot = append(multiBot, sb)	
 	} else {
 		log.Printf("[ERROR] failed to load sysbot, %v", err)
 	}
 
 	if sb, err := bot.NewTip(opts.SysData); err == nil {
+		multiBot = append(multiBot, sb)
+	} else {
+		log.Printf("[ERROR] failed to load sysbot, %v", err)
+	}
+
+	if sb, err := bot.NewHelp(opts.SysData); err == nil {
 		multiBot = append(multiBot, sb)
 	} else {
 		log.Printf("[ERROR] failed to load sysbot, %v", err)
