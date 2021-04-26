@@ -46,7 +46,7 @@ func (p Help) OnMessage(msg Message) (response Response) {
 	if strings.EqualFold(msg.Text, "readme!") {
 		if p.say != nil && len(p.say) > 0 {
 			return Response{
-				Text: fmt.Sprintf("_%s_", p.say),
+				Text: fmt.Sprintf("_%s_", strings.Join(p.say, "\n")),
 				Send: true,
 			}
 		}
